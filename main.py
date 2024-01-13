@@ -51,9 +51,9 @@ class Config:
 
 
 class ActiveButton(Button):
-    def __init__(self, bg=(1, 1, 1, 1), **kwargs):
+    def __init__(self, bg=(1, 1, 1), **kwargs):
         super(ActiveButton, self).__init__(**kwargs)
-        self.bg = bg[0:3]
+        self.bg = bg
         Window.bind(mouse_pos=self.pos_check)
 
     def pos_check(self, ints, pos):
@@ -78,7 +78,7 @@ class PaintWidget(Widget):
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
             with self.canvas:
-                Color(1, 1, 0, 1)
+                Color(1, 0, 0, 1)
                 touch.ud["line"] = Line(points=(touch.x, touch.y), width=self.size_cursor)
 
     def on_touch_move(self, touch):
@@ -105,9 +105,8 @@ class PaintWidget(Widget):
         # self.canvas.children.extend(temp)
 
 
-class NoteBook(App):
+class WriteAndDraw(App):
     settings = Config()
-    # encoding_button = font_size_text = autosave = catalogs = selected_file = None
 
     def build(self):
 
@@ -158,7 +157,7 @@ class NoteBook(App):
 
         panel.add_widget(ActiveButton(text='Reload', on_press=lambda _: self.update_catalog(), size_hint=(.1, 1)))
         panel.add_widget(ActiveButton(text='Create', on_press=lambda _: self.save_file(), size_hint=(.1, 1)))
-        panel.add_widget(ActiveButton(text='Save', on_press=self.save_text, size_hint=(.1, 1)))
+        panel.add_widget(ActiveButton(text='Save', on_press=lambda _: self.save_text(), size_hint=(.1, 1)))
 
         self.text_ = TextInput(hint_text='None', padding=(15, 1, 1, 1),
                                background_color=(11.8, 11, 12.2, 0.3),
@@ -193,8 +192,6 @@ class NoteBook(App):
         core.add_widget(text_field)
 
         root.add_widget(core)
-
-        # root.add_widget(PaintWidget())
 
         return root
 
@@ -282,4 +279,4 @@ class NoteBook(App):
 
 
 if __name__ == '__main__':
-    NoteBook().run()
+    WriteAndDraw().run()
